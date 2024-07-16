@@ -25,6 +25,16 @@ app.get('/api/vehicles', (req, res) => {
     res.json(vehicles);
 });
 
+app.get('/api/vehicle/:vehicleID', (req, res) => {
+    const vehicle = vehicles.find(v => v.vehicleID == req.params.vehicleID);
+    if (vehicle) {
+        Object.assign(vehicle, req.body, { lastUpdated: new Date().toISOString() });
+        res.json(vehicle);
+    } else {
+        res.status(404).json({ message: 'Vehicle not found' });
+    }
+});
+
 app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
 });
